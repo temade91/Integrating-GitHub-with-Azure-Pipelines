@@ -1,25 +1,26 @@
+module.exports = {
+  testEnvironment: "jsdom",
 
-const nextJest = require('next/jest')
-
-const createJestConfig = nextJest({ dir: './' })
-
-const customJestConfig = {
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  testEnvironment: 'jest-environment-jsdom',
-  moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/$1',
+  transform: {
+    "^.+\\.[jt]sx?$": "babel-jest", // ensures Babel handles JSX
   },
+
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/$1",
+    "\\.(css|less|sass|scss)$": "identity-obj-proxy", // 👈 mock CSS imports
+  },
+
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+
   reporters: [
-    'default',
+    "default",
     [
-      'jest-junit',
+      "jest-junit",
       {
-        outputDirectory: './test-results',
-        outputName: 'junit.xml',
+        outputDirectory: "reports/junit",
+        outputName: "junit.xml",
       },
     ],
   ],
-}
-
-module.exports = createJestConfig(customJestConfig)
+};
 

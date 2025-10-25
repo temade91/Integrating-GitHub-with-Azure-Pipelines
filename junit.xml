@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="5" failures="0" errors="0" time="28.984">
+  <testsuite name="__tests__/Home.test.jsx" errors="0" failures="0" skipped="0" timestamp="2025-10-25T08:40:09" time="19.251" tests="2">
+    <testcase classname="Home renders the About link heading" name="Home renders the About link heading" time="0.331">
+    </testcase>
+    <testcase classname="Home renders the main welcome text" name="Home renders the main welcome text" time="0.02">
+    </testcase>
+  </testsuite>
+  <testsuite name="__tests__/About.test.jsx" errors="0" failures="0" skipped="0" timestamp="2025-10-25T08:40:29" time="1.552" tests="3">
+    <testcase classname="About renders About text" name="About renders About text" time="0.039">
+    </testcase>
+    <testcase classname="About renders back to home link" name="About renders back to home link" time="0.011">
+    </testcase>
+    <testcase classname="About renders Lorem ipsum text" name="About renders Lorem ipsum text" time="0.025">
+    </testcase>
+  </testsuite>
+</testsuites>
