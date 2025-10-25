@@ -18,31 +18,26 @@ steps:
     npm install -g yarn
   displayName: 'Install Yarn'
 
-  script: |
+- script: |
     yarn install
     node --version
-  displayName: 'install packages'
+  displayName: 'Install packages'
 
-  script: |
+- script: |
     yarn test
-  displayName: 'run tests'
+  displayName: 'Run tests'
 
-  task: PublishTestResults@2
-  displayName: 'Publish Test Results junit.xml'
+- task: PublishTestResults@2
+  displayName: 'Publish Test Results (JUnit)'
   inputs:
-  testResultFormat: 'JUnit'
-  testResultsFiles: '**/junit.xml'
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/junit.xml'
 
-  script: |
+- script: |
     rm -rf node_modules
   displayName: 'Clean node_modules'
 
-  script: |
+- script: |
     yarn install --production --frozen-lockfile
     yarn build
   displayName: 'Yarn install production and build'
-
-- script: |
-    yarn install --frozen-lockfile
-    yarn build
-  displayName: 'Yarn install and build'
