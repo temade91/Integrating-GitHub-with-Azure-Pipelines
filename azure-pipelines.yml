@@ -1,6 +1,4 @@
 # Azure DevOps Pipeline for Node.js + Yarn + Next.js
-# Docs: https://learn.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
 - main
 
@@ -19,13 +17,13 @@ steps:
     npm install -g yarn
   displayName: 'Install Yarn'
 
-# Install all dependencies (dev + prod)
+# Install all dependencies (dev + prod) for build and tests
 - script: |
     yarn install --frozen-lockfile
     node --version
   displayName: 'Install all packages'
 
-# Run tests using Yarn to ensure local Jest is used
+# Run tests using local Jest binary
 - script: |
     yarn jest --ci --reporters=default --reporters=jest-junit
   displayName: 'Run tests'
@@ -47,4 +45,3 @@ steps:
     rm -rf node_modules
     yarn install --production --frozen-lockfile
   displayName: 'Install production dependencies only'
-
