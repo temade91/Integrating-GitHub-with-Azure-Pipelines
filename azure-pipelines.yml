@@ -1,5 +1,4 @@
-# Node.js
-# Build a Node.js project with Yarn on a self-hosted agent
+# Azure DevOps Pipeline for Node.js + Yarn + Next.js
 # Docs: https://learn.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
@@ -9,35 +8,43 @@ pool:
   name: Default   # your self-hosted agent pool name
 
 steps:
+# Install Node.js
 - task: NodeTool@0
   inputs:
     versionSpec: '20.x'
   displayName: 'Install Node.js'
 
+# Install Yarn globally
 - script: |
     npm install -g yarn
   displayName: 'Install Yarn'
 
+# Install all dependencies (dev + prod)
 - script: |
-    yarn install
+    yarn install --frozen-lockfile
     node --version
-  displayName: 'Install packages'
+  displayName: 'Install all packages'
 
+# Run tests
 - script: |
     yarn test
   displayName: 'Run tests'
 
+# Publish JUnit test results
 - task: PublishTestResults@2
   displayName: 'Publish Test Results (JUnit)'
   inputs:
     testResultsFormat: 'JUnit'
     testResultsFiles: '**/junit.xml'
 
+# Build Next.js project (with devDependencies present)
+- script: |
+    yarn build
+  displayName: 'Build Next.js project'
+
+# Optional: Clean node_modules and install production-only deps for deployment
 - script: |
     rm -rf node_modules
-  displayName: 'Clean node_modules'
-
-- script: |
     yarn install --production --frozen-lockfile
-    yarn build
-  displayName: 'Yarn install production and build'
+  displayName: 'Install production dependencies only'
+
