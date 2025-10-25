@@ -25,7 +25,7 @@ steps:
 
 # Run tests using local Jest binary
 - script: |
-    yarn jest --ci --reporters=default --reporters=jest-junit
+    yarn test 
   displayName: 'Run tests'
 
 # Publish JUnit test results
