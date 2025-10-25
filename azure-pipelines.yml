@@ -1,11 +1,9 @@
-#  Azure DevOps Pipeline for Node.js + Yarn + Next.js + Jest
-# Guaranteed working for your setup
-
+# Azure DevOps Pipeline for Node.js + Yarn + Next.js + Jest
 trigger:
 - main
 
 pool:
-  name: Default   # your self-hosted agent pool name
+  name: Default   # your self-hosted agent pool
 
 steps:
 # 1️⃣ Install Node.js
@@ -20,19 +18,18 @@ steps:
   displayName: 'Install Yarn'
 
 # 3️⃣ Install ALL dependencies (dev + prod)
-# This ensures Jest, TypeScript, and Next.js are all available.
 - script: |
     yarn install --frozen-lockfile --production=false
     node --version
     yarn --version
   displayName: 'Install dependencies (dev + prod)'
 
-# 4️⃣ Run Jest tests (use yarn to ensure local binary is used)
+# 4️⃣ Run Jest tests
 - script: |
-    npx jest --ci --reporters=default --reporters=jest-junit
-  displayName: 'Run tests with Jest'
+    yarn test
+  displayName: 'Run tests'
 
-# 5️⃣ Publish JUnit test results (for Azure test reporting)
+# 5️⃣ Publish JUnit test results
 - task: PublishTestResults@2
   displayName: 'Publish Test Results (JUnit)'
   inputs:
@@ -40,12 +37,12 @@ steps:
     testResultsFiles: '**/junit.xml'
     failTaskOnFailedTests: true
 
-# 6️⃣ Build Next.js (includes TypeScript handling)
+# 6️⃣ Build Next.js project
 - script: |
     yarn build
   displayName: 'Build Next.js project'
 
-# 7️⃣ Optional: Prepare for deployment (clean + install prod-only deps)
+# 7️⃣ Optional: Clean node_modules and install production-only deps for deployment
 - script: |
     rm -rf node_modules
     yarn install --production --frozen-lockfile
