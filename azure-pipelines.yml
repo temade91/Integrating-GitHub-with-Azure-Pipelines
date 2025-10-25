@@ -19,9 +19,9 @@ steps:
 
 # Install all dependencies (dev + prod) for build and tests
 - script: |
-    yarn install --frozen-lockfile
+    yarn install --frozen-lockfile --production=false
     node --version
-  displayName: 'Install all packages'
+  displayName: 'Install all packages including devDependencies'
 
 # Run tests using local Jest binary
 - script: |
