@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="5" failures="0" errors="0" time="4.985">
-  <testsuite name="__tests__/About.test.jsx" errors="0" failures="0" skipped="0" timestamp="2025-10-25T11:47:47" time="2.563" tests="3">
-    <testcase classname="About renders About text" name="About renders About text" time="0.063">
+<testsuites name="jest tests" tests="5" failures="0" errors="0" time="4.737">
+  <testsuite name="__tests__/About.test.jsx" errors="0" failures="0" skipped="0" timestamp="2025-10-25T12:09:32" time="2.804" tests="3">
+    <testcase classname="About renders About text" name="About renders About text" time="0.088">
     </testcase>
-    <testcase classname="About renders back to home link" name="About renders back to home link" time="0.038">
+    <testcase classname="About renders back to home link" name="About renders back to home link" time="0.015">
     </testcase>
-    <testcase classname="About renders Lorem ipsum text" name="About renders Lorem ipsum text" time="0.025">
+    <testcase classname="About renders Lorem ipsum text" name="About renders Lorem ipsum text" time="0.033">
     </testcase>
   </testsuite>
-  <testsuite name="__tests__/Home.test.jsx" errors="0" failures="0" skipped="0" timestamp="2025-10-25T11:47:50" time="0.938" tests="2">
-    <testcase classname="Home renders the About link heading" name="Home renders the About link heading" time="0.167">
+  <testsuite name="__tests__/Home.test.jsx" errors="0" failures="0" skipped="0" timestamp="2025-10-25T12:09:35" time="0.719" tests="2">
+    <testcase classname="Home renders the About link heading" name="Home renders the About link heading" time="0.15">
     </testcase>
-    <testcase classname="Home renders the main welcome text" name="Home renders the main welcome text" time="0.022">
+    <testcase classname="Home renders the main welcome text" name="Home renders the main welcome text" time="0.028">
     </testcase>
   </testsuite>
 </testsuites>

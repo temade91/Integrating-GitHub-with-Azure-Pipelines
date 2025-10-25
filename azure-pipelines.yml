@@ -25,9 +25,9 @@ steps:
     node --version
   displayName: 'Install all packages'
 
-# Run tests
+# Run tests using Yarn to ensure local Jest is used
 - script: |
-    yarn test
+    yarn jest --ci --reporters=default --reporters=jest-junit
   displayName: 'Run tests'
 
 # Publish JUnit test results
@@ -37,7 +37,7 @@ steps:
     testResultsFormat: 'JUnit'
     testResultsFiles: '**/junit.xml'
 
-# Build Next.js project (with devDependencies present)
+# Build Next.js project (requires devDependencies like TypeScript)
 - script: |
     yarn build
   displayName: 'Build Next.js project'
