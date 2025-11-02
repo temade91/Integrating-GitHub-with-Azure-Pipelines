@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: temadeintegratinggithubwithazurepipelines 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: temadeintegratinggithubwithazurepipelines
+  template:
+    metadata:
+      labels:
+        app: temadeintegratinggithubwithazurepipelines 
+    spec:
+      containers:
+        - name: temadeintegratinggithubwithazurepipelines 
+          image: testacrregistry123.azurecr.io/temadeintegratinggithubwithazurepipelines
+          ports:
+          - containerPort: 3000
