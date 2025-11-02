@@ -1,6 +1,5 @@
 # Deploy to Azure Kubernetes Service
-# Build and push image to Azure Container Registry; Deploy to Azure Kubernetes Service
-# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+# Build and push image to Azure Container Registry; Deploy to AKS
 
 trigger:
 - main
@@ -9,6 +8,8 @@ resources:
 - repo: self
 
 variables:
+  # Self-hosted agent pool name
+  poolName: 'Default'
 
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'd6c1b21f-1ce2-4e6b-9c08-6b91615fd105'
@@ -18,10 +19,6 @@ variables:
   tag: '$(Build.BuildId)'
   imagePullSecret: 'testacrregistry1230ab7-auth'
 
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
-
-
 stages:
 - stage: Build
   displayName: Build stage
@@ -29,10 +26,10 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      vmImage: $(vmImageName)
+      name: $(poolName)   # ✅ Using the variable for self-hosted pool
     steps:
     - task: Docker@2
-      displayName: Build and push an image to container registry
+      displayName: Build and push image to container registry
       inputs:
         command: buildAndPush
         repository: $(imageRepository)
@@ -47,12 +44,11 @@ stages:
 - stage: Deploy
   displayName: Deploy stage
   dependsOn: Build
-
   jobs:
   - deployment: Deploy
-    displayName: Deploy
+    displayName: Deploy to AKS
     pool:
-      vmImage: $(vmImageName)
+      name: $(poolName)   # ✅ Using the same variable here
     environment: 'temade91IntegratingGitHubwithAzurePipelines.default'
     strategy:
       runOnce:
@@ -76,4 +72,3 @@ stages:
                 $(imagePullSecret)
               containers: |
                 $(containerRegistry)/$(imageRepository):$(tag)
-
