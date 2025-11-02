@@ -35,6 +35,7 @@ stages:
         repository: $(imageRepository)
         dockerfile: $(dockerfilePath)
         containerRegistry: $(dockerRegistryServiceConnection)
+        arguments: --platform linux/amd64
         tags: |
           $(tag)
 
