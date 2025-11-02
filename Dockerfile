@@ -8,7 +8,9 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 
 # Install all dependencies (including devDeps for build/test)
-RUN yarn install --frozen-lockfile
+RUN yarn config set registry https://registry.npmjs.org && \
+    yarn config set network-timeout 600000 && \
+    yarn install --frozen-lockfile --network-concurrency 1
 
 # Copy the rest of the app
 COPY . .
