@@ -32,7 +32,7 @@ spec:
               cpu: 500m
               memory: 512Mi
       imagePullSecrets:
-        - name: dockerhub-secret  # 👈 Created via kubectl (see below)
+        - name: acr-pull-secret  # 👈 Created via kubectl (see below)
 
 ---
 
