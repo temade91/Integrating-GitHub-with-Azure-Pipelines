@@ -22,38 +22,40 @@ stages:
       name: Default   # ✅ Your self-hosted agent
     steps:
 
-    # ✅ Ensure required tools are installed on the agent
-    - powershell: |
-        Write-Host "Checking & Installing Dependencies..."
+    # ✅ Install dependencies on Linux
+    - bash: |
+        set -e
 
-        # Install Chocolatey if missing
-        if (-Not (Get-Command choco -ErrorAction SilentlyContinue)) {
-          Set-ExecutionPolicy Bypass -Scope Process -Force
-          [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
-          iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-        }
+        echo "Checking & Installing Dependencies..."
 
-        # Install Docker Desktop (only installs if not installed already)
-        if (-Not (Get-Command docker -ErrorAction SilentlyContinue)) {
-          choco install docker-desktop -y --no-progress
-        }
+        # Update package list
+        sudo apt-get update -y
 
-        # Install Azure CLI
-        if (-Not (Get-Command az -ErrorAction SilentlyContinue)) {
-          choco install azure-cli -y --no-progress
-        }
+        # Install Docker if missing
+        if ! command -v docker &> /dev/null; then
+          sudo apt-get install -y docker.io
+          sudo systemctl enable docker
+          sudo systemctl start docker
+        fi
 
-        # Install kubectl
-        if (-Not (Get-Command kubectl -ErrorAction SilentlyContinue)) {
-          choco install kubernetes-cli -y --no-progress
-        }
+        # Install Azure CLI if missing
+        if ! command -v az &> /dev/null; then
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+        fi
 
-        Write-Host "✅ All required dependencies are installed."
-      displayName: "Install Docker, Azure CLI, Kubectl (First Run Setup)"
+        # Install kubectl if missing
+        if ! command -v kubectl &> /dev/null; then
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+        fi
+
+        echo "✅ All required dependencies are installed."
+      displayName: "Install Docker, Azure CLI, Kubectl (Linux)"
 
     # ✅ Ensure Docker Engine is running
-    - powershell: |
-        Start-Service com.docker.service
+    - bash: |
+        sudo systemctl start docker
+        sudo systemctl status docker
         docker version
       displayName: "Start Docker Service"
 
