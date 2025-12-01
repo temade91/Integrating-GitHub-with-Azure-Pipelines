@@ -1,121 +1,121 @@
-🚀 CI/CD Pipeline: GitHub → Azure DevOps → ACR → AKS
+# 🚀GitHub Source Code Integrated With Azure DevOps CI/CD
 
-This repository demonstrates a complete CI/CD workflow where application code stored in GitHub is automatically:
+This project demonstrates how I host my application **source code on GitHub**, integrate it with **Azure DevOps**, and then use **Azure Pipelines** to automatically build, containerize, and deploy the application into **Azure Kubernetes Service (AKS)**.
 
-Built into a Docker image
+My goal is to maintain GitHub as my development platform while leveraging Azure DevOps for enterprise-grade CI/CD automation.
 
-Pushed to Azure Container Registry (ACR)
+---
 
-Deployed to Azure Kubernetes Service (AKS)
-— using Azure DevOps Pipelines.
+# 🧩 Project Overview
 
-This project uses a self-hosted agent, Docker, Kubernetes, and Azure cloud services to simulate a real production deployment environment.
+This setup connects:
 
-📌 Pipeline Overview
+**GitHub (source code) → Azure DevOps Pipelines → Azure Container Registry → AKS (deployment)**
 
-The Azure DevOps pipeline includes two stages:
+The workflow enables:
 
-🔹 1. Build Stage
+1. **Continuous Integration (CI)**  
+   - GitHub repository triggers an Azure Pipeline  
+   - Pipeline builds the project  
+   - Builds Docker image  
+   - Pushes image to Azure Container Registry (ACR)
 
-Installs required dependencies (Docker, Azure CLI, Kubectl)
+2. **Continuous Deployment (CD)**  
+   - Azure Pipelines retrieves Kubernetes manifests  
+   - Creates an imagePullSecret  
+   - Deploys updated containers into AKS automatically
 
-Builds Docker image from your project
+---
 
-Pushes image to ACR
+# 🛠️ Technologies Used
 
-Publishes Kubernetes manifests as artifacts
+| Category | Technology |
+|---------|------------|
+| Framework | **Next.js** |
+| Language | **JavaScript / React** |
+| Runtime | **Node.js** |
+| Package Manager | **Yarn** |
+| Containerization | **Docker** |
+| Container Registry | **Azure Container Registry (ACR)** |
+| Orchestration | **Azure Kubernetes Service (AKS)** |
+| Pipeline Engine | **Azure DevOps Pipelines** |
+| Source Control | **GitHub** |
 
-🔹 2. Deploy Stage
+---
 
-Connects to AKS cluster
+# 🔗 GitHub → Azure DevOps Integration
 
-Creates an imagePullSecret for pulling images from ACR
+This project uses:
 
-Deploys Kubernetes resources using:
+- GitHub as the source repository  
+- Azure DevOps Service Connection to pull code directly from GitHub  
+- Azure Pipelines YAML stored inside the repository  
+- Automated pipeline runs when new commits are pushed to `main`  
 
-deployment.yml
+This allows me to keep GitHub as my main development platform while benefiting from Azure DevOps automation and enterprise CI/CD capabilities.
 
-service.yml
+---
 
-Updates your application running in AKS
+# 📦 Pipeline Features
 
-📁 Repository Structure
-.
-├── manifests/
-│   ├── deployment.yml
-│   └── service.yml
-├── Dockerfile
-└── azure-pipelines.yml
+✔ Builds Docker images automatically from GitHub commits  
+✔ Pushes images to Azure Container Registry  
+✔ Deploys to AKS using Kubernetes manifests  
+✔ Runs on a **self-hosted Azure DevOps Linux agent**  
+✔ Installs Docker, Azure CLI, and Kubectl automatically  
+✔ Full end-to-end CI/CD delivered through Azure Pipelines  
 
-⚙️ Azure DevOps Pipeline (azure-pipelines.yml)
+---
 
-This pipeline uses:
+# ⚙️ Kubernetes Manifests
 
-Self-hosted Linux agent
+The AKS deployment uses YAML manifests stored under:
 
-ACR service connection
+```
+/manifests/deployment.yml  
+/manifests/service.yml 
+```
 
-Docker@2 task for image build & push
+These are automatically published during the **Build** stage and consumed in the **Deploy** stage.
 
-KubernetesManifest@0 task for AKS deployment
+---
 
-Your variables:
+# 🧑‍💻 Local Development (Next.js)
 
-dockerRegistryServiceConnection: '9b22992a-0815-4056-8f68-ebe31adc70b1'
-imageRepository: 'temadeintegratinggithubwithazurepipelines'
-containerRegistry: 'testacrregistry123.azurecr.io'
-dockerfilePath: '**/Dockerfile'
-tag: '$(Build.BuildId)'
-imagePullSecret: 'testacrregistry1239eea-auth'
+To run the project locally:
 
-🔄 Complete CI/CD Flow
- GitHub Repo
-      │
-      ├── Push / Commit
-      ▼
-Azure DevOps Pipeline
- ├── Build Stage
- │    ├── Install tools
- │    ├── Build Docker image
- │    └── Push to ACR
- └── Deploy Stage
-      ├── Create imagePullSecret
-      └── Apply manifests to AKS
-      ▼
- AKS Deployment Updated
+```sh
+yarn install
+yarn dev
+```
 
-🛠️ Prerequisites
+To build the Docker image locally:
 
-Before running this pipeline, ensure you have:
+```sh
+docker build -t helios-proof .
+```
 
-Azure Subscription
+---
 
-Azure Resource Group
+# 🚀 Deployment Workflow Summary
 
-ACR (Azure Container Registry)
+```
+1. Push code to GitHub  
+2. Azure DevOps Pipeline triggers automatically  
+3. Docker image builds + stored in ACR  
+4. Kubernetes manifests published  
+5. Azure DevOps deploys the updated image into AKS  
+6. Application becomes available in the cluster  
+```
 
-AKS Cluster
+---
 
-Self-hosted DevOps Agent
+# 📬 Final Notes
 
-Service connection to ACR
+This is a personal project built to:
 
-🔐 Attach AKS to ACR (Required)
+- Learn & implement CI/CD  
+- Integrate GitHub with Azure DevOps Pipelines  
+- Deploy modern JavaScript applications on Kubernetes  
+- Use cloud-native tools like Docker, AKS, and ACR  
 
-Run:
-
-az aks update -n <aks-name> -g <resource-group> --attach-acr <acr-name>
-
-🚀 Deploying the Application
-
-Once everything is set:
-
-Push code to GitHub
-
-Azure DevOps pipeline triggers automatically
-
-Image is built and pushed to ACR
-
-Manifests are deployed to AKS
-
-Application becomes available inside the cluster
