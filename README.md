@@ -1,36 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+🚀 CI/CD Pipeline: GitHub → Azure DevOps → ACR → AKS
 
-## Getting Started
+This repository demonstrates a complete CI/CD workflow where application code stored in GitHub is automatically:
 
-First, run the development server:
+Built into a Docker image
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Pushed to Azure Container Registry (ACR)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Deployed to Azure Kubernetes Service (AKS)
+— using Azure DevOps Pipelines.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project uses a self-hosted agent, Docker, Kubernetes, and Azure cloud services to simulate a real production deployment environment.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+📌 Pipeline Overview
 
-## Learn More
+The Azure DevOps pipeline includes two stages:
 
-To learn more about Next.js, take a look at the following resources:
+🔹 1. Build Stage
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Installs required dependencies (Docker, Azure CLI, Kubectl)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Builds Docker image from your project
 
-## Deploy on Vercel
+Pushes image to ACR
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Publishes Kubernetes manifests as artifacts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+🔹 2. Deploy Stage
+
+Connects to AKS cluster
+
+Creates an imagePullSecret for pulling images from ACR
+
+Deploys Kubernetes resources using:
+
+deployment.yml
+
+service.yml
+
+Updates your application running in AKS
+
+📁 Repository Structure
+.
+├── manifests/
+│   ├── deployment.yml
+│   └── service.yml
+├── Dockerfile
+└── azure-pipelines.yml
+
+⚙️ Azure DevOps Pipeline (azure-pipelines.yml)
+
+This pipeline uses:
+
+Self-hosted Linux agent
+
+ACR service connection
+
+Docker@2 task for image build & push
+
+KubernetesManifest@0 task for AKS deployment
+
+Your variables:
+
+dockerRegistryServiceConnection: '9b22992a-0815-4056-8f68-ebe31adc70b1'
+imageRepository: 'temadeintegratinggithubwithazurepipelines'
+containerRegistry: 'testacrregistry123.azurecr.io'
+dockerfilePath: '**/Dockerfile'
+tag: '$(Build.BuildId)'
+imagePullSecret: 'testacrregistry1239eea-auth'
+
+🔄 Complete CI/CD Flow
+ GitHub Repo
+      │
+      ├── Push / Commit
+      ▼
+Azure DevOps Pipeline
+ ├── Build Stage
+ │    ├── Install tools
+ │    ├── Build Docker image
+ │    └── Push to ACR
+ └── Deploy Stage
+      ├── Create imagePullSecret
+      └── Apply manifests to AKS
+      ▼
+ AKS Deployment Updated
+
+🛠️ Prerequisites
+
+Before running this pipeline, ensure you have:
+
+Azure Subscription
+
+Azure Resource Group
+
+ACR (Azure Container Registry)
+
+AKS Cluster
+
+Self-hosted DevOps Agent
+
+Service connection to ACR
+
+🔐 Attach AKS to ACR (Required)
+
+Run:
+
+az aks update -n <aks-name> -g <resource-group> --attach-acr <acr-name>
+
+🚀 Deploying the Application
+
+Once everything is set:
+
+Push code to GitHub
+
+Azure DevOps pipeline triggers automatically
+
+Image is built and pushed to ACR
+
+Manifests are deployed to AKS
+
+Application becomes available inside the cluster
